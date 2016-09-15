@@ -1,9 +1,9 @@
-Stella
-======
+How wrong are the asteroseismic scaling relations?
+==================================================
 
 [![Build Status](https://travis-ci.org/andycasey/stella.svg?branch=master)](https://travis-ci.org/andycasey/stella)
 
-Don't ask.
+At least a little bit wrong.
 
 
 License
