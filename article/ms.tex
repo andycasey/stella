@@ -5,12 +5,14 @@
 
 \usepackage{amsmath}
 \usepackage{bm}
+\usepackage{mathtools} % Provides amsmath and dcases so that \fracs are not compressed in \cases environments
 
 \IfFileExists{vc.tex}{\input{vc.tex}}{\newcommand{\githash}{UNKNOWN}\newcommand{\giturl}{UNKNOWN}}
 
 \newcommand{\acronym}[1]{{\small{#1}}}
 
 \newcommand{\project}[1]{\textsl{#1}}
+\newcommand{\parsec}{\acronym{PARSEC}}
 
 \newcommand{\teff}{T_{\mathrm{eff}}}
 \newcommand{\teffSolar}{T_{\mathrm{eff},\odot}}
@@ -30,6 +32,8 @@
 \newcommand{\given}{|}
 \newcommand{\data}{\mathcal{D}}
 
+\newcommand{\uniform}[2]{\mathcal{U}\left(#1,#2\right)}
+
 \begin{document}
 \title{Stella}
 
@@ -45,16 +49,12 @@
 
 \keywords{stars: fundamental parameters --- stars: abundances
 % Clear rest of page
-\clearpage}
-
+%\clearpage}
+}
 
 \section{Introduction} 
 \label{sec:introduction}
 
-
-
-\section{Model}
-\label{sec:model}
 
 The asteroseismic scaling relation for mass is
 
@@ -62,22 +62,50 @@ The asteroseismic scaling relation for mass is
     \frac{\mass}{\massSolar} \approx \left(\frac{\numax}{\numaxSolar}\right)^{3}\left(\frac{\deltanu}{\deltanuSolar}\right)^{-4}\left(\frac{\teff}{\teffSolar}\right)^{3/2}  \quad ,
 \end{eqnarray}
 
-\noindent{}but just how wrong is this?
+\noindent{}but just how wrong is this? There are good theoretical reasons to expect that the power spectral density properties $\numax$ and $\deltanu$ are dependent on the stellar chemical composition (i.e., $\feh$), yet there is no metallicity dependence given in \ref{eq:mass-scaling-relation}.  Moreover, if the scaling relations are employed for extremely metal-poor stars, then the inferred masses are $\gtrsim2M_\odot$, implying that those extremely metal-poor stars must be very young. Naturally, this is inconsistent with the general consensus that extremely metal-poor stars are old, ancient objects.
 
-Our model has the following parameters (summarised as $\theta$): Current mass $\mass_{now}$, distance $d$, initial mass $\mass_{init}$, stellar age $\age$, photospheric metallicity $\feh$, and effective temperature $\teff$.
+So, how wrong are the scaling relations? Is there a metallicity dependence that we can incorporate into Equation \ref{eq:mass-scaling-relation} to bring the inferred masses of extremely metal-poor stars consistent with expectations from stellar evolution? 
+
+\section{Model}
+\label{sec:model}
+
+
+Our model has the following parameters (summarised as $\theta$): Current mass $\mass_{now}$, distance $d$, initial mass $\mass_{init}$, stellar age $\age$, and photospheric metallicity $\feh$:
 \begin{eqnarray}\label{eq:model-parameters}
-    \theta = (\mass_{now}, d, \mass_{initial}, \tau, \feh, \teff)
+    \theta = (\mass_{now}, d, \mass_{init}, \tau, \feh)
 \end{eqnarray}
 
-The observables (data $\data$) are parallax $\parallax$, apparent $J$-band magnitude, and apparent $J-H$ color.
-\begin{eqnarray}\label{eq:data}
-    \data = (\parallax, J, J-H)
-\end{eqnarray}
-
-We adopt the log likelihood function,
+We seek to generate the data from these model parameters. Specifically from a given initial mass $\mass_{init}$, metallicity $\feh$ and age $\tau$ we interpolate a \parsec\ isochrone.  We interpolate along that isochrone to the proposed current mass $\mass_{now}$, and yield the corresponding absolute $J$- and $H$-band magnitudes $M_J$ and $M_H$, respectively.  Given the distance $d$ and by adopting extinction from the \citet{Schlegel} maps (\textbf{someone must have carefully done dust in the kepler field -- use that}), the apparent magnitude in $J$ (or $H$) can be derived: 
 \begin{eqnarray}
-    \log{p\left(\data\given\theta\right)} & = & -\frac{1}{2}\left[\frac{(J-J_{model})^2}{\sigma_{J}^2} + \frac{1}{\sigma_\parallax^2}\left(\parallax - \frac{1}{d}\right)^2 + \frac{\left([J-H] - [J-H]_{model}\right)^2}{\sigma_J^2 + \sigma_H^2}\right] 
+    J = M_J + 5\log_{10}d - 5 + A_J \quad .
 \end{eqnarray}
+
+The adopted extinction in each band is given for all sources in Table \ref{tab:stellar-properties}.
+
+
+Thereby we can generate the observed parallax $\parallax$ ($1/d$), apparent $J$-band magnitude, and apparent $J - H$ color, which we will collectively refer to as the data $\data = (\parallax, J, J-H)$. 
+
+\textbf{Proper use of priors is required here, and we will use bayes}
+
+
+We adopt the log likelihood function:
+\begin{eqnarray}\label{eq:likelihood-function}
+    \log{p\left(\data\given\theta\right)} & = & -\frac{1}{2}\left[\frac{(J-J_{model})^2}{\sigma_{J}^2} + \frac{1}{\sigma_\parallax^2}\left(\parallax - \frac{1}{d}\right)^2 + \frac{\left([J-H] - [J-H]_{model}\right)^2}{\sigma_J^2 + \sigma_H^2}\right] \quad . 
+\end{eqnarray}
+
+
+We adopt a uniform prior on the current mass $\mass_{now} = \uniform{0.15}{\mass_{init}}$, allowing for mass loss throughout the stellar lifetime down to the minimum mass in any \parsec\ isochrone.  We adopt a prior on the distance $d$ that assumes an exponentially decreasing space density with increasing distance,
+\begin{eqnarray}
+    p\left(d\right) = \begin{dcases*}
+        \frac{d^2}{2L^3}\exp{\left(-\frac{d}{L}\right)} & if $d > 0$,\\
+        0 & otherwise.
+    \end{dcases*}
+\end{eqnarray}
+
+\noindent{}where we adopt a length scale $L = 1.35$~kpc.
+
+\textbf{Joint priors on initial mass, age, and metallicity: Use the spectroscopic metallicity as a prior for each star, then otherwise use the Binney joint priors?}
+
 
 
 
