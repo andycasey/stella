@@ -13,8 +13,19 @@
 \newcommand{\project}[1]{\textsl{#1}}
 
 \newcommand{\teff}{T_{\mathrm{eff}}}
+\newcommand{\teffSolar}{T_{\mathrm{eff},\odot}}
 \newcommand{\logg}{\log g}
 \newcommand{\feh}{[\mathrm{Fe/H}]}
+
+% Common terms.
+\newcommand{\parallax}{\varpi}
+\newcommand{\mass}{\mathcal{M}}
+\newcommand{\massSolar}{\mass_\odot}
+\newcommand{\numax}{\nu_\mathrm{max}}
+\newcommand{\numaxSolar}{\nu_{\mathrm{max},\odot}}
+\newcommand{\deltanu}{\Delta\nu}
+\newcommand{\deltanuSolar}{\deltanu_\odot}
+\newcommand{\age}{\tau}
 
 
 \begin{document}
@@ -37,6 +48,19 @@
 
 \section{Introduction} 
 \label{sec:introduction}
+
+
+
+\section{Model}
+\label{sec:model}
+
+The asteroseismic scaling relation for mass is
+
+\begin{eqnarray}\label{eq:mass-scaling-relation}
+    \frac{\mass}{\massSolar} \approx \left(\frac{\numax}{\numaxSolar}\right)^{3}\left(\frac{\deltanu}{\deltanuSolar}\right)^{-4}\left(\frac{\teff}{\teffSolar}\right)^{3/2}  \quad ,
+\end{eqnarray}
+
+\noindent{}but just how wrong is this?
 
 
 \end{document}
