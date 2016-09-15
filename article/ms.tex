@@ -70,12 +70,12 @@ So, how wrong are the scaling relations? Is there a metallicity dependence that 
 \label{sec:model}
 
 
-Our model has the following parameters (summarised as $\theta$): Current mass $\mass_{now}$, distance $d$, initial mass $\mass_{init}$, stellar age $\age$, and photospheric metallicity $\feh$:
+Our model has the following parameters (summarised as $\theta$): distance $d$, initial mass $\mass_{init}$, stellar age $\age$, and photospheric metallicity $\feh$:
 \begin{eqnarray}\label{eq:model-parameters}
-    \theta = (\mass_{now}, d, \mass_{init}, \tau, \feh)
+    \theta = (d, \mass_{init}, \tau, \feh)
 \end{eqnarray}
 
-We seek to generate the data from these model parameters. Specifically from a given initial mass $\mass_{init}$, metallicity $\feh$ and age $\tau$ we interpolate a \parsec\ isochrone.  We interpolate along that isochrone to the proposed current mass $\mass_{now}$, and yield the corresponding absolute $J$- and $H$-band magnitudes $M_J$ and $M_H$, respectively.  Given the distance $d$ and by adopting extinction from the \citet{Schlegel} maps (\textbf{someone must have carefully done dust in the kepler field -- use that}), the apparent magnitude in $J$ (or $H$) can be derived: 
+We seek to generate the data from these model parameters. Specifically from a given initial mass $\mass_{init}$, metallicity $\feh$ we interpolate an evolutionary track from the Dartmouth models.  We interpolate along along that track to the proposed age $\tau$, and find the predicted absolute $J$- and $H$-band magnitudes $M_J$ and $M_H$, respectively.  Given the distance $d$ and by adopting extinction from the \citet{Schlegel} maps (\textbf{someone must have carefully done dust in the kepler field -- use that}), the apparent magnitude in $J$ (or $H$) can be derived: 
 \begin{eqnarray}
     J = M_J + 5\log_{10}d - 5 + A_J \quad .
 \end{eqnarray}
@@ -94,7 +94,7 @@ We adopt the log likelihood function:
 \end{eqnarray}
 
 
-We adopt a uniform prior on the current mass $\mass_{now} = \uniform{0.15}{\mass_{init}}$, allowing for mass loss throughout the stellar lifetime down to the minimum mass in any \parsec\ isochrone.  We adopt a prior on the distance $d$ that assumes an exponentially decreasing space density with increasing distance,
+We adopt a prior on the distance $d$ that assumes an exponentially decreasing space density with increasing distance,
 \begin{eqnarray}
     p\left(d\right) = \begin{dcases*}
         \frac{d^2}{2L^3}\exp{\left(-\frac{d}{L}\right)} & if $d > 0$,\\
