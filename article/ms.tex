@@ -27,6 +27,8 @@
 \newcommand{\deltanuSolar}{\deltanu_\odot}
 \newcommand{\age}{\tau}
 
+\newcommand{\given}{|}
+\newcommand{\data}{\mathcal{D}}
 
 \begin{document}
 \title{Stella}
@@ -61,6 +63,22 @@ The asteroseismic scaling relation for mass is
 \end{eqnarray}
 
 \noindent{}but just how wrong is this?
+
+Our model has the following parameters (summarised as $\theta$): Current mass $\mass_{now}$, distance $d$, initial mass $\mass_{init}$, stellar age $\age$, photospheric metallicity $\feh$, and effective temperature $\teff$.
+\begin{eqnarray}\label{eq:model-parameters}
+    \theta = (\mass_{now}, d, \mass_{initial}, \tau, \feh, \teff)
+\end{eqnarray}
+
+The observables (data $\data$) are parallax $\parallax$, apparent $J$-band magnitude, and apparent $J-H$ color.
+\begin{eqnarray}\label{eq:data}
+    \data = (\parallax, J, J-H)
+\end{eqnarray}
+
+We adopt the log likelihood function,
+\begin{eqnarray}
+    \log{p\left(\data\given\theta\right)} & = & -\frac{1}{2}\left[\frac{(J-J_{model})^2}{\sigma_{J}^2} + \frac{1}{\sigma_\parallax^2}\left(\parallax - \frac{1}{d}\right)^2 + \frac{\left([J-H] - [J-H]_{model}\right)^2}{\sigma_J^2 + \sigma_H^2}\right] 
+\end{eqnarray}
+
 
 
 \end{document}
